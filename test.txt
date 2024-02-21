@@ -1,0 +1,221 @@
+/Users/nh03ym/.nvm/versions/node/v19.9.0/bin/npm test
+
+> wirespec-storybook-server@1.0.0 test
+> ts-node src/test.ts
+
+path
+path id
+id 1872494899 1872599999
+path id
+id 1872599999 1872705099
+path name
+name 1872494899 2969604001
+path name
+name 2969604001 4066713103
+path biography
+biography 1872494899 9829509593
+path biography
+biography 1872494899 9829509593
+path user
+user 1872494899 8987596024
+path user
+user 8987596024 16102697149
+path 0
+0 8987596024 8987596072
+path id
+id 8987596024 8987701124
+path id
+id 8987701124 8987806224
+path email
+email 8987596024 9984702143
+path email
+email 9984702143 10981808262
+path 1
+1 8987596024 8987596073
+path id
+id 8987596024 8987701124
+path id
+id 8987701124 8987806224
+path email
+email 8987596024 9984702143
+path email
+email 9984702143 10981808262
+path 2
+2 8987596024 8987596074
+path id
+id 8987596024 8987701124
+path id
+id 8987701124 8987806224
+path email
+email 8987596024 9984702143
+path email
+email 9984702143 10981808262
+path 3
+3 8987596024 8987596075
+path id
+id 8987596024 8987701124
+path id
+id 8987701124 8987806224
+path email
+email 8987596024 9984702143
+path email
+email 9984702143 10981808262
+path
+path id
+id 1872494899 1872599999
+path id
+id 1872599999 1872705099
+path name
+name 1872494899 2969604001
+path name
+name 2969604001 4066713103
+path biography
+biography 1872494899 9829509593
+path biography
+biography 1872494899 9829509593
+path age
+age 1872494899 1969598000
+path age
+age 1872494899 1969598000
+path gender
+gender 1872494899 1982906130
+path gender
+gender 1982906130 2093317361
+path adres
+adres 1872494899 1986605724
+path adres
+adres 1986605724 2100716549
+path street
+street 1986605724 6099218455
+path street
+street 6099218455 10211831186
+path city
+city 1986605724 11091721854
+path city
+city 11091721854 20196837984
+path postalCode
+postalCode 1986605724 7090224215
+path postalCode
+postalCode 7090224215 12193842706
+path country
+country 1986605724 2013823676
+path country
+country 2013823676 2041041628
+path user
+user 1872494899 8987596024
+path user
+user 8987596024 16102697149
+path id
+id 8987596024 8987701124
+path id
+id 8987701124 8987806224
+path email
+email 8987596024 9984702143
+path email
+email 9984702143 10981808262
+{
+  id: 'cAA4AA75-5dB2-8f20-AcbE-5fd1ba0af4da',
+  name: 'h>BOVZv&8=OH!r?lYPBOd2Ze%vSz!X[YL-[X^S',
+  biography: 'rG}8}s/.w+F`^@1cSPZGgSp2y8S@HAt|oHxsKS1z',
+  user: [
+    {
+      id: '25bCdeCE-bA48-719f-5C0b-A16e11f5DD5B',
+      email: 'Marian.Lehner67@yahoo.com'
+    },
+    {
+      id: '25bCdeCE-bA48-719f-5C0b-A16e11f5DD5B',
+      email: 'Marian.Lehner67@yahoo.com'
+    },
+    {
+      id: '25bCdeCE-bA48-719f-5C0b-A16e11f5DD5B',
+      email: 'Marian.Lehner67@yahoo.com'
+    },
+    {
+      id: '25bCdeCE-bA48-719f-5C0b-A16e11f5DD5B',
+      email: 'Marian.Lehner67@yahoo.com'
+    }
+  ]
+}
+-----
+{
+  id: 'cAA4AA75-5dB2-8f20-AcbE-5fd1ba0af4da',
+  name: 'h>BOVZv&8=OH!r?lYPBOd2Ze%vSz!X[YL-[X^S',
+  biography: 'rG}8}s/.w+F`^@1cSPZGgSp2y8S@HAt|oHxsKS1z',
+  age: ']Ny!53cyksc@aWA.uJ+oBWiF)7g*GA4^vko,>',
+  gender: 'MALE',
+  adres: {
+    street: 'Vandervort Ville',
+    city: 'uX##!tDX.2BPuNshk^v`NDy<$SW=k>aNc#',
+    postalCode: '58037',
+    country: 'Mauritius'
+  },
+  user: {
+    id: '25bCdeCE-bA48-719f-5C0b-A16e11f5DD5B',
+    email: 'Marian.Lehner67@yahoo.com'
+  }
+}
+-----
+path
+{ name: 'Email', seed: 10981808262, data: 'Marian.Lehner67@yahoo.com' } Marian.Lehner67@yahoo.com
+path
+path id
+id 8987596072 8987701172
+path id
+id 8987701172 8987806272
+path email
+email 8987596072 9984702191
+path email
+email 9984702191 10981808310
+{
+  name: 'User',
+  seed: 8987596072,
+  data: {
+    id: '25bCdeCE-bA48-719f-5C0b-A16e11f5DD5B',
+    email: 'Marian.Lehner67@yahoo.com'
+  }
+} {
+  id: 'A2Cb47dA-9A22-CEf8-BA6f-85aaE588a7a7',
+  email: 'Destany_Paucek75@hotmail.com'
+}
+/Users/nh03ym/projects/wirespec-storybook-server/src/test.ts:23
+cache.forEach(it => {
+      ^
+AssertionError [ERR_ASSERTION]: Expected values to be loosely deep-equal:
+
+{
+  email: 'Marian.Lehner67@yahoo.com',
+  id: '25bCdeCE-bA48-719f-5C0b-A16e11f5DD5B'
+}
+
+should loosely deep-equal
+
+{
+  email: 'Destany_Paucek75@hotmail.com',
+  id: 'A2Cb47dA-9A22-CEf8-BA6f-85aaE588a7a7'
+}
+    at /Users/nh03ym/projects/wirespec-storybook-server/src/test.ts:26:14
+    at Array.forEach (<anonymous>)
+    at Object.<anonymous> (/Users/nh03ym/projects/wirespec-storybook-server/src/test.ts:23:7)
+    at Module._compile (node:internal/modules/cjs/loader:1275:14)
+    at Module.m._compile (/Users/nh03ym/projects/wirespec-storybook-server/node_modules/ts-node/src/index.ts:1618:23)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1329:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/nh03ym/projects/wirespec-storybook-server/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1133:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:972:12)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:83:12) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: {
+    id: '25bCdeCE-bA48-719f-5C0b-A16e11f5DD5B',
+    email: 'Marian.Lehner67@yahoo.com'
+  },
+  expected: {
+    id: 'A2Cb47dA-9A22-CEf8-BA6f-85aaE588a7a7',
+    email: 'Destany_Paucek75@hotmail.com'
+  },
+  operator: 'deepEqual'
+}
+
+Process finished with exit code 1
+
+

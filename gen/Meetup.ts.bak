@@ -1,0 +1,44 @@
+
+export type UserId = `${string & { __brand: "^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$" }}`;
+export type PersonId = `${string & { __brand: "^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$" }}`;
+export type EventId = `${string & { __brand: "^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$" }}`;
+
+export type FullName = `${string & { __brand: "^.{1,255}$" }}`;
+export type Street = `${string & { __brand: "^.{1,255}$" }}`;
+export type City = `${string & { __brand: "^.{1,255}$" }}`;
+export type Country = `${string & { __brand: "^.{1,255}$" }}`;
+export type PostalCode = `${string & { __brand: "^\\d{4}[ ]?[A-Z]{2}$" }}`;
+export type Email = `${string & { __brand: "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$" }}`;
+
+export type Gender = "MALE" | "FEMALE" | "UNKNOWN"
+
+export type Person = {
+  "id": PersonId,
+  "name": FullName,
+  "age": number,
+  "gender": Gender,
+  "adres": Adres,
+  "user": User
+}
+
+
+export type Adres = {
+  "street": Street,
+  "city": City,
+  "postalCode": PostalCode,
+  "country": Country
+}
+
+
+export type User = {
+  "id": UserId,
+  "email": Email
+}
+
+
+export type Event = {
+  "id": EventId,
+  "name": string,
+  "description": string,
+  "adres": Adres
+}
