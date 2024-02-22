@@ -20,8 +20,7 @@ enum Gender {
 type Person {
     id: PersonId,
     name: FullName,
-    biography: String,
-    user:User[]
+    biography: String
 }
 
 type PersonDetail {

@@ -1,104 +1,99 @@
-import {wsAst, wsLib} from "./wirespec";
+import {wsAst} from "./wirespec";
 
 import RandExp from "randexp";
 import {customGeneratorMap} from "./context";
 import {cache} from "./cache";
 import {rng, Rng} from "./rng";
+import {community} from "../../wirespec/src/plugin/npm/build/dist/js/productionLibrary";
 
-export const generate = (type: string, isIterator: boolean = false, path: string = "", randomGenerator: Rng = rng()) => {
+import WsType = community.flock.wirespec.compiler.lib.WsType;
+import WsRefined = community.flock.wirespec.compiler.lib.WsRefined;
+import WsEnum = community.flock.wirespec.compiler.lib.WsEnum;
+import WsReference = community.flock.wirespec.compiler.lib.WsReference;
+import WsCustom = community.flock.wirespec.compiler.lib.WsCustom;
+import WsPrimitive = community.flock.wirespec.compiler.lib.WsPrimitive;
+
+export const generate = (type: string, isIterator: boolean = false, generator: Rng = rng()) => {
 
 
-    const def = wsAst.parsed.find((it: any) => it.name === type)
+    const def = wsAst.result?.find((it: any) => it.name === type)
 
-    if (!def) {
+    if (def == undefined) {
         throw new Error(`Type not found: ${type}`)
     }
 
-    const name = def.name as string
+    //@ts-ignore
+    const name = def.name
 
     if (isIterator) {
-        const length = randomGenerator.range(1, 10)
+        const length = generator.range(1, 10)
         return Array(length).fill(0).map((_, idx) => {
-            return generateObject(`${idx}`)
+            return generateObject(generator.nextState(idx.toString()))
         });
     } else {
-        return generateObject(path)
+        return generateObject(generator)
     }
 
 
-    function generateObject(path: string): any {
+    function generateObject(generator: Rng): any {
 
         if (customGeneratorMap[name] !== undefined) {
             const gen = customGeneratorMap[name]
-            const generator = pathGenerator(path)
             const seed = generator.range(0, 100)
             const data = gen(seed)
             cache.push({name, seed: generator.state, data})
             return data
         }
 
-        switch (def.constructor) {
-            case wsLib.WsType:
-                return generateType(def, path)
-            case wsLib.WsRefined:
-                return generateRefined(def, path)
-            case wsLib.WsEnum:
-                return generateEnum(def, path)
-        }
+        if(def instanceof  WsType)
+            return generateType(def, generator)
+
+        if(def instanceof  WsRefined)
+            return generateRefined(def, generator)
+
+        if(def instanceof  WsEnum)
+            return generateEnum(def, generator)
+
     }
 
-    function generateType(def: typeof wsLib.WsType, path: string) {
-        const data = def.shape.value.reduce((acc: {}, cur: typeof wsLib.WsShape) => {
+    function generateType(def: WsType, generator: Rng) {
+        const data = def.shape.value.reduce((acc: {}, cur) => {
             return {
                 ...acc,
-                [cur.identifier.value]: generateReference(cur.reference, `${cur.identifier.value}`)
+                [cur.identifier.value]: generateReference(cur.reference, generator.nextState(cur.identifier.value))
             }
         }, {})
-        cache.push({name, seed: randomGenerator.state, data})
+        cache.push({name, seed: generator.state, data})
         return data
     }
 
-    function generateReference(def: typeof wsLib.WsReference, path: string) {
-        switch (def.constructor) {
-            case wsLib.WsPrimitive:
-                return randomRegex(".{1,50}", path)
-            case wsLib.WsCustom:
-                return generate(def.value, def.u24_1, path, pathGenerator(path))
+    function generateReference(def: WsReference, generator: Rng) {
+        if (def instanceof WsPrimitive) {
+            return randomRegex(".{1,50}", generator)
+        }
+        if (def instanceof WsCustom) {
+            return generate(def.value, def.isIterable, generator)
         }
     }
 
-    function generateRefined(def: typeof wsLib.WsRefined, path: string) {
-        const regex = def.validator.substring(1).slice(0, -2).replaceAll("\\\\", "\\")
-        return randomRegex(regex, path)
+    function generateRefined(def: WsRefined, generator: Rng) {
+        const regex = def.validator.substring(1).slice(0, -2).replace(/\\\\/, "\\")
+        return randomRegex(regex, generator)
     }
 
-    function generateEnum(def: typeof wsLib.WsEnum, path: string) {
-        const generator = pathGenerator(path)
+    function generateEnum(def: WsEnum, generator: Rng) {
         const seed = generator.range(0, def.entries.length) ?? 0
         return def.entries[seed]
     }
 
 
-    function randomRegex(regex: string, path: string) {
+    function randomRegex(regex: string, generator: Rng) {
         const randexp = new RandExp(regex)
-        const generator = pathGenerator(path)
         randexp.max = 50
         randexp.randInt = (from, to) => {
             return generator.nextRange(from, to)
         }
         return randexp.gen()
-    }
-
-    function pathGenerator(path: string) {
-
-        if(path !== "") {
-            const generator = randomGenerator.nextState(path)
-            console.log(path, randomGenerator.state, generator.state)
-            return generator
-        } else {
-            return randomGenerator
-        }
-
     }
 
 }

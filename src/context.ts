@@ -7,6 +7,5 @@ export const customGeneratorMap: Record<string, (seed: number) => any> = {
     "PostalCode": (seed: number) => seededFaker(seed).location.zipCode(),
     "Country": (seed: number) => seededFaker(seed).location.country(),
     "Email": (seed: number) => seededFaker(seed).internet.email(),
+    "FullName": (seed: number) => seededFaker(seed).person.fullName(),
 }
-
-export const storage = new AsyncLocalStorage<Rng>()

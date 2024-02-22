@@ -6,8 +6,8 @@ import {cache, findFromCache} from "./cache";
 const seed = "218c7a91c0e245728c74asfadf"
 
 
-const person = generate("Person", false, "", rng(seed))
-const personDetail = generate("PersonDetail", false, "", rng(seed))
+const person = generate("Person", false, rng(seed))
+const personDetail = generate("PersonDetail", false, rng(seed))
 
 console.log(person)
 console.log("-----")
@@ -19,15 +19,18 @@ equal(person.name, personDetail.name, "Name is not equals")
 console.log("-----")
 
 cache.forEach(it => {
-    const data = generate(it.name, false, "", rng(it.seed))
-    console.log(it, data)
+    const data = generate(it.name, false, rng(it.seed))
+    // console.log(it, data)
     deepEqual(it.data, data)
 })
 
-const formCache = findFromCache("PersonDetail", personDetail.id)
+const formCache = findFromCache(personDetail.id)
 
-console.log("formCache", formCache);
+// console.log("formCache", formCache);
 
+const x = generate("PersonDetail", false, rng(formCache?.seed))
+
+equal(personDetail.name, x.name)
 
 
 

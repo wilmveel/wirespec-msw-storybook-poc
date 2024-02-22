@@ -6,8 +6,8 @@ export type CacheItem = {
 
 export const cache: CacheItem[] = []
 
-export const findFromCache = (name:string, value:string) => {
-    return cache.find(it => it.name === name && findVal(it.data, value))
+export const findFromCache = (value:string) => {
+    return cache.find(it => findVal(it.data, value))
 }
 
 const findVal = (object: object, search: string): boolean => {

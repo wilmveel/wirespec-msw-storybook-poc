@@ -1,19 +1,24 @@
-import {emitPath, wsAst, wsCompiler, wsFile, wsLib, wsMethods} from "./wirespec";
+import {emitPath, wsAst} from "./wirespec";
 import express, {Handler, Request, Response, Router} from "express";
 import {generate} from "./generator";
 import {rng} from "./rng";
-import {storage} from "./context";
+import {CacheItem, findFromCache} from "./cache";
+import {community} from "../../wirespec/src/plugin/npm/build/dist/js/productionLibrary";
 
-const handler = (router: Router, endpoint: typeof wsLib.WsEndpoint) => {
-    const route = (method: typeof wsLib.WsMethod, path: string, handler: Handler) => {
+import WsMethod = community.flock.wirespec.compiler.lib.WsMethod;
+import WsEndpoint = community.flock.wirespec.compiler.lib.WsEndpoint;
+import WsCustom = community.flock.wirespec.compiler.lib.WsCustom;
+
+const handler = (router: Router, endpoint: WsEndpoint) => {
+    const route = (method: WsMethod, path: string, handler: Handler) => {
         switch (method) {
-            case wsMethods.GET:
+            case WsMethod.GET:
                 return router.get(path, handler)
-            case wsMethods.POST:
+            case WsMethod.POST:
                 return router.post(path, handler)
-            case wsMethods.PUT:
+            case WsMethod.PUT:
                 return router.put(path, handler)
-            case wsMethods.DELETE:
+            case WsMethod.DELETE:
                 return router.delete(path, handler)
             default:
                 throw new Error(`Cannot map method: ${method}`)
@@ -21,11 +26,31 @@ const handler = (router: Router, endpoint: typeof wsLib.WsEndpoint) => {
     }
 
     route(endpoint.method, emitPath(endpoint.path), (req: Request, res: Response) => {
-        storage.enterWith(rng(endpoint.method + emitPath(endpoint.path)))
-        const wsResponse = endpoint.responses.find((it:any) =>  it.status === "200")
-        const wsReference = wsResponse.content.reference
-        res.status(wsResponse.status);
-        res.send(generate(wsReference.value, wsReference.u24_1))
+        const pathParams = JSON.stringify(req.params)
+        console.log(pathParams)
+
+        const generator = rng(endpoint.method + req.originalUrl)
+        console.log(req.originalUrl)
+        const wsResponse = endpoint.responses.find(it => it.status === "200")
+        const wsReference = wsResponse?.content?.reference
+
+        if (wsResponse != undefined && wsReference != undefined && wsReference instanceof WsCustom) {
+            const cache = Object.entries(req.params).reduce<CacheItem[]>((acc, [key, value]) => {
+                console.log("---path", value)
+                const res = findFromCache(value)
+                if (res) {
+                    return [...acc, res]
+                } else {
+                    return acc
+                }
+            }, [])
+            console.log("x", cache)
+
+            const cachedGenerator = cache[0] ? rng(cache[0].seed) : generator
+
+            res.status(parseInt(wsResponse.status));
+            res.send(generate(wsReference.value, wsReference.isIterable, cachedGenerator))
+        }
     })
 
     return router
@@ -33,11 +58,12 @@ const handler = (router: Router, endpoint: typeof wsLib.WsEndpoint) => {
 
 export const app = express()
 
-app.use(
-    wsAst.parsed
-        .filter((it: any) => it instanceof wsLib.WsEndpoint)
-        .reduce(handler, express.Router())
-)
+export const router = wsAst.result
+        ?.filter((it): it is WsEndpoint => it instanceof WsEndpoint)
+        ?.reduce(handler, express.Router())
+    ?? express.Router()
+
+app.use(router)
 
 
 

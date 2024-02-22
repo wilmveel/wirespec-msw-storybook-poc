@@ -1,23 +1,27 @@
 // @ts-ignore
-import wsImport from "@flock/wirespec/wirespec-src-compiler-lib";
+import {community} from "@flock/wirespec";
 import {readFileSync} from "node:fs";
+import WsMethod = community.flock.wirespec.compiler.lib.WsMethod;
+import WsLiteral = community.flock.wirespec.compiler.lib.WsLiteral;
+import WsParam = community.flock.wirespec.compiler.lib.WsParam;
+import WsSegment = community.flock.wirespec.compiler.lib.WsSegment;
 
-export const wsLib = wsImport.community.flock.wirespec.compiler.lib
+export const wsLib = community.flock.wirespec.compiler.lib
+export const wsNpm = community.flock.wirespec.plugin.npm
 export const wsFile = String(readFileSync("./spec/meetup.ws"))
-export const wsCompiler = new wsLib.Compiler()
-export const wsAst = wsCompiler.parse(wsFile)
+
+export const wsAst = wsNpm.parse(wsFile)
 
 export const wsMethods = {
-    GET : wsLib.WsMethod.valueOf("GET"),
-    POST : wsLib.WsMethod.valueOf("POST"),
-    PUT : wsLib.WsMethod.valueOf("PUT"),
-    DELETE : wsLib.WsMethod.valueOf("DELETE"),
+    GET : WsMethod.valueOf("GET"),
+    POST : WsMethod.valueOf("POST"),
+    PUT : WsMethod.valueOf("PUT"),
+    DELETE : WsMethod.valueOf("DELETE"),
 }
 
-type Path = (typeof wsLib.WsLiteral | typeof wsLib.WsParam)[]
-export const emitPath = (path: Path): string =>
+export const emitPath = (path: (WsSegment | WsParam)[]): string =>
     "/" + path.map((segment) => {
-        if(segment instanceof wsLib.WsLiteral) return segment.value
-        if(segment instanceof wsLib.WsParam) return `:${segment.identifier.value}`
+        if(segment instanceof WsLiteral) return segment.value
+        if(segment instanceof WsParam) return `:${segment.identifier.value}`
         else throw new Error("Cannot emit path")
     }).join("/")
