@@ -1,4 +1,3 @@
-// @ts-ignore
 import {community} from "@flock/wirespec";
 import {readFileSync} from "node:fs";
 import WsMethod = community.flock.wirespec.compiler.lib.WsMethod;
@@ -6,11 +5,11 @@ import WsLiteral = community.flock.wirespec.compiler.lib.WsLiteral;
 import WsParam = community.flock.wirespec.compiler.lib.WsParam;
 import WsSegment = community.flock.wirespec.compiler.lib.WsSegment;
 
-export const wsLib = community.flock.wirespec.compiler.lib
-export const wsNpm = community.flock.wirespec.plugin.npm
+export const parse = community.flock.wirespec.plugin.npm.parse
+
 export const wsFile = String(readFileSync("./spec/meetup.ws"))
 
-export const wsAst = wsNpm.parse(wsFile)
+export const wsAst = parse(wsFile)
 
 export const wsMethods = {
     GET : WsMethod.valueOf("GET"),
