@@ -42,7 +42,12 @@ type Adres {
 
 type User {
     id: UserId,
-    email: Email
+    email: Email,
+    state: UserState
+}
+
+enum UserState {
+    A,B
 }
 
 type Event {

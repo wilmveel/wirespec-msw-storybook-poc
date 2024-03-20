@@ -3,7 +3,7 @@ import {readFileSync} from "node:fs";
 import WsMethod = community.flock.wirespec.compiler.lib.WsMethod;
 import WsLiteral = community.flock.wirespec.compiler.lib.WsLiteral;
 import WsParam = community.flock.wirespec.compiler.lib.WsParam;
-import WsSegment = community.flock.wirespec.compiler.lib.WsSegment;
+import WsEndpoint = community.flock.wirespec.compiler.lib.WsEndpoint;
 
 export const parse = community.flock.wirespec.plugin.npm.parse
 
@@ -18,8 +18,8 @@ export const wsMethods = {
     DELETE : WsMethod.valueOf("DELETE"),
 }
 
-export const emitPath = (path: (WsSegment | WsParam)[]): string =>
-    "/" + path.map((segment) => {
+export const emitPath = (endpoint: WsEndpoint): string =>
+    "/" + endpoint.path.map((segment) => {
         if(segment instanceof WsLiteral) return segment.value
         if(segment instanceof WsParam) return `:${segment.identifier.value}`
         else throw new Error("Cannot emit path")

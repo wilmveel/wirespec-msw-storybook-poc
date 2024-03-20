@@ -3,11 +3,12 @@ import express, {Handler, Request, Response, Router} from "express";
 import {generate} from "./generator";
 import {rng} from "./rng";
 import {CacheItem, findFromCache} from "./cache";
-import {community} from "../../wirespec/src/plugin/npm/build/dist/js/productionLibrary";
-
+import {community} from "@flock/wirespec";
 import WsMethod = community.flock.wirespec.compiler.lib.WsMethod;
 import WsEndpoint = community.flock.wirespec.compiler.lib.WsEndpoint;
 import WsCustom = community.flock.wirespec.compiler.lib.WsCustom;
+import WsLiteral = community.flock.wirespec.compiler.lib.WsLiteral;
+import WsParam = community.flock.wirespec.compiler.lib.WsParam;
 
 const handler = (router: Router, endpoint: WsEndpoint) => {
     const route = (method: WsMethod, path: string, handler: Handler) => {
@@ -25,18 +26,15 @@ const handler = (router: Router, endpoint: WsEndpoint) => {
         }
     }
 
-    route(endpoint.method, emitPath(endpoint.path), (req: Request, res: Response) => {
-        const pathParams = JSON.stringify(req.params)
-        console.log(pathParams)
+    const path = emitPath(endpoint)
 
-        const generator = rng(endpoint.method + req.originalUrl)
-        console.log(req.originalUrl)
+    route(endpoint.method, path, (req: Request, res: Response) => {
+        const generator = rng(endpoint.method + req.originalUrl + "random")
         const wsResponse = endpoint.responses.find(it => it.status === "200")
         const wsReference = wsResponse?.content?.reference
 
         if (wsResponse != undefined && wsReference != undefined && wsReference instanceof WsCustom) {
             const cache = Object.entries(req.params).reduce<CacheItem[]>((acc, [key, value]) => {
-                console.log("---path", value)
                 const res = findFromCache(value)
                 if (res) {
                     return [...acc, res]
@@ -58,7 +56,9 @@ const handler = (router: Router, endpoint: WsEndpoint) => {
 
 export const app = express()
 
+
 export const router = wsAst.result
+        // @ts-ignore
         ?.filter((it): it is WsEndpoint => it instanceof WsEndpoint)
         ?.reduce(handler, express.Router())
     ?? express.Router()

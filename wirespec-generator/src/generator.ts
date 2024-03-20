@@ -4,8 +4,8 @@ import RandExp from "randexp";
 import {customGeneratorMap} from "./context";
 import {cache} from "./cache";
 import {rng, Rng} from "./rng";
-import {community} from "../../wirespec/src/plugin/npm/build/dist/js/productionLibrary";
 
+import {community} from "@flock/wirespec";
 import WsType = community.flock.wirespec.compiler.lib.WsType;
 import WsRefined = community.flock.wirespec.compiler.lib.WsRefined;
 import WsEnum = community.flock.wirespec.compiler.lib.WsEnum;
@@ -14,7 +14,6 @@ import WsCustom = community.flock.wirespec.compiler.lib.WsCustom;
 import WsPrimitive = community.flock.wirespec.compiler.lib.WsPrimitive;
 
 export const generate = (type: string, isIterator: boolean = false, generator: Rng = rng()) => {
-
 
     const def = wsAst.result?.find((it: any) => it.name === type)
 

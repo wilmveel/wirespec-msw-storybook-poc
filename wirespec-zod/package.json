@@ -1,0 +1,16 @@
+{
+  "name": "wirespec-msw",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "rm -rf dist && tsc"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@flock/wirespec": "0.8.50",
+    "msw": "^1.3.2",
+    "wirespec-generator": "*"
+  }
+}
