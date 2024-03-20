@@ -1,7 +1,4 @@
-import {wsAst} from "./wirespec";
-
 import RandExp from "randexp";
-import {customGeneratorMap} from "./context";
 import {cache} from "./cache";
 import {rng, Rng} from "./rng";
 
@@ -12,10 +9,12 @@ import WsEnum = community.flock.wirespec.compiler.lib.WsEnum;
 import WsReference = community.flock.wirespec.compiler.lib.WsReference;
 import WsCustom = community.flock.wirespec.compiler.lib.WsCustom;
 import WsPrimitive = community.flock.wirespec.compiler.lib.WsPrimitive;
+import WsParseResult = community.flock.wirespec.compiler.lib.WsParseResult;
+import WsPrimitiveType = community.flock.wirespec.compiler.lib.WsPrimitiveType;
 
-export const generate = (type: string, isIterator: boolean = false, generator: Rng = rng()) => {
+export const generate = (ast: WsParseResult, type: string, isIterator: boolean = false, generator: Rng = rng(), customGeneratorMap: Record<string, (seed: number) => any> ) => {
 
-    const def = wsAst.result?.find((it: any) => it.name === type)
+    const def = ast.result?.find((it: any) => it.name === type)
 
     if (def == undefined) {
         throw new Error(`Type not found: ${type}`)
@@ -44,13 +43,13 @@ export const generate = (type: string, isIterator: boolean = false, generator: R
             return data
         }
 
-        if(def instanceof  WsType)
+        if (def instanceof WsType)
             return generateType(def, generator)
 
-        if(def instanceof  WsRefined)
+        if (def instanceof WsRefined)
             return generateRefined(def, generator)
 
-        if(def instanceof  WsEnum)
+        if (def instanceof WsEnum)
             return generateEnum(def, generator)
 
     }
@@ -68,10 +67,13 @@ export const generate = (type: string, isIterator: boolean = false, generator: R
 
     function generateReference(def: WsReference, generator: Rng) {
         if (def instanceof WsPrimitive) {
-            return randomRegex(".{1,50}", generator)
+            if (def.type === WsPrimitiveType.Boolean)
+                return randomBoolean(generator)
+            else
+                return randomRegex(".{1,50}", generator)
         }
         if (def instanceof WsCustom) {
-            return generate(def.value, def.isIterable, generator)
+            return generate(ast, def.value, def.isIterable, generator, customGeneratorMap)
         }
     }
 
@@ -93,6 +95,10 @@ export const generate = (type: string, isIterator: boolean = false, generator: R
             return generator.nextRange(from, to)
         }
         return randexp.gen()
+    }
+
+    function randomBoolean(generator: Rng) {
+        return !!generator.nextRange(0, 2)
     }
 
 }

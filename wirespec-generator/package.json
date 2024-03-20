@@ -1,12 +1,12 @@
 {
-  "name": "wirespec-storybook-server",
+  "name": "wirespec-generator",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "ts-node wirespec-generator/src/test.ts",
-    "generate": "node_modules/.bin/wirespec compile -f spec/meetup.ws -o gen -l TypeScript -p ''",
-    "start": "ts-node wirespec-generator/src/app.ts"
+    "test": "ts-node src/test.ts",
+    "start": "ts-node src/app.ts",
+    "build": "rm -rf dist && tsc"
   },
   "author": "",
   "license": "ISC",

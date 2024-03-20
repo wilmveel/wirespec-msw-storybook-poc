@@ -1,6 +1,4 @@
-refined PersonId /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/g
-refined UserId /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/g
-refined EventId /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/g
+refined UUID /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/g
 
 refined FullName /^.{1,255}$/g
 
@@ -18,13 +16,13 @@ enum Gender {
 }
 
 type Person {
-    id: PersonId,
+    id: UUID,
     name: FullName,
     biography: String
 }
 
 type PersonDetail {
-    id: PersonId,
+    id: UUID,
     name: FullName,
     biography: String,
     age: Integer,
@@ -41,35 +39,54 @@ type Adres {
 }
 
 type User {
-    id: UserId,
+    id: UUID,
     email: Email,
     state: UserState
 }
 
 enum UserState {
-    A,B
+    ON, OFF
 }
 
-type Event {
-    id: EventId,
+type Todo {
+    id: UUID,
     name: String,
     description: String,
-    location: Adres,
-    atendees: Person[]
+    done: Boolean,
+    test:String,
+    person: Person
 }
 
-endpoint EventsAll GET /events -> {
-    200 ->  Event[]
+type TodoInput {
+    name: String,
+    description: String,
+    location: Adres
 }
 
-endpoint EventsById GET /events/{id:EventId} -> {
-    200 ->  Event
+endpoint GetAllTodo GET /todos -> {
+    200 ->  Todo[]
 }
 
-endpoint EventsById GET /persons -> {
+endpoint GetTodoById GET /todos/{id:UUID} -> {
+    200 ->  Todo
+}
+
+endpoint ToggleTodoById POST Boolean /todos/{id:UUID}/toggle -> {
+    200 ->  Todo
+}
+
+endpoint CreateTodo POST TodoInput /todos -> {
+    200 ->  Todo
+}
+
+endpoint UpdateTodo PUT Todo /todos/{id:UUID} -> {
+    200 ->  Todo
+}
+
+endpoint PersonsAll GET /persons -> {
     200 ->  Person[]
 }
 
-endpoint EventsById GET /persons/{id:PersonId} -> {
+endpoint PersonsById GET /persons/{id:UUID} -> {
     200 ->  PersonDetail
 }

@@ -7,8 +7,6 @@ import {community} from "@flock/wirespec";
 import WsMethod = community.flock.wirespec.compiler.lib.WsMethod;
 import WsEndpoint = community.flock.wirespec.compiler.lib.WsEndpoint;
 import WsCustom = community.flock.wirespec.compiler.lib.WsCustom;
-import WsLiteral = community.flock.wirespec.compiler.lib.WsLiteral;
-import WsParam = community.flock.wirespec.compiler.lib.WsParam;
 
 const handler = (router: Router, endpoint: WsEndpoint) => {
     const route = (method: WsMethod, path: string, handler: Handler) => {
@@ -42,7 +40,6 @@ const handler = (router: Router, endpoint: WsEndpoint) => {
                     return acc
                 }
             }, [])
-            console.log("x", cache)
 
             const cachedGenerator = cache[0] ? rng(cache[0].seed) : generator
 

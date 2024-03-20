@@ -1,16 +1,19 @@
 {
-  "name": "wirespec-msw",
+  "name": "wirespec-zod",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "rm -rf dist && tsc"
+    "build": "rm -rf dist && tsc",
+    "test": "ts-node src/test.ts"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@flock/wirespec": "0.8.50",
-    "msw": "^1.3.2",
-    "wirespec-generator": "*"
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2"
   }
 }

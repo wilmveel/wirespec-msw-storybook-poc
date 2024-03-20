@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { App } from './App';
+import {rest} from "msw";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
@@ -29,22 +30,6 @@ export const Primary: Story = {
     },
 };
 
-export const Secondary: Story = {
-    args: {
-        label: 'Button',
-    },
-};
+Primary.parameters = {
 
-export const Large: Story = {
-    args: {
-        size: 'large',
-        label: 'Button',
-    },
-};
-
-export const Small: Story = {
-    args: {
-        size: 'small',
-        label: 'Button',
-    },
-};
+}

@@ -9,4 +9,9 @@ export const customGeneratorMap: Record<string, (seed: number) => any> = {
     "Country": (seed: number) => seededFaker(seed).location.country(),
     "Email": (seed: number) => seededFaker(seed).internet.email(),
     "FullName": (seed: number) => seededFaker(seed).person.fullName(),
+    "Todo[]": (seed: number) => [
+        {},
+        {},
+        {},
+    ],
 }
